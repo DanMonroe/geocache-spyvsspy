@@ -1,0 +1,86 @@
+<html> 
+<head>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+  <script type="application/javascript">
+	
+	// show initial spy images on page load
+	$(document).ready(function() {
+		
+		var whiteCanvas = $("#whiteCanvas")[0];
+    var whiteContext = whiteCanvas.getContext("2d");
+    var whitespyimage = new Image;
+    whitespyimage.onload = function() {
+    	whiteContext.drawImage(whitespyimage, 0, 0);
+    };
+    whitespyimage.src = "white_spy.png";
+
+		var blackCanvas = $("#blackCanvas")[0];
+    var blackContext = blackCanvas.getContext("2d");
+    var blackspyimage = new Image;
+    blackspyimage.onload = function() {
+    	blackContext.drawImage(blackspyimage, 0, 0);
+    };
+    blackspyimage.src = "black_spy.png";
+	});
+
+	// reveal	
+	function combineSpies() {
+    var maximumColumns = 325;
+    var maximumRows = 351;
+		var red = 0;
+		var green = 1;
+		var blue = 2;
+		var alpha = 3;
+
+		var whiteCanvas = $("#whiteCanvas")[0];
+    var whiteContext = whiteCanvas.getContext("2d");
+    var whiteImageData = whiteContext.getImageData(0,0,maximumColumns,maximumRows);
+
+		var blackCanvas = $("#blackCanvas")[0];
+    var blackContext = blackCanvas.getContext("2d");
+    var blackImageData = blackContext.getImageData(0,0,maximumColumns,maximumRows);
+		
+    var coordsspyimage = new Image;
+ 		var coordsCanvas = $("#coordsCanvas")[0];
+    var coordsContext = coordsCanvas.getContext("2d");
+    
+    var coordsImageData = coordsContext.createImageData(maximumColumns, maximumRows);
+ 
+ 		var thisPixel = 0;
+ 		var whiteAlpha = 0;
+ 		var blackAlpha = 0;
+ 		
+    for(var workingRow = 0; workingRow < maximumRows; workingRow++ ) {
+	    for(var workingCol = 0; workingCol < maximumColumns; workingCol++ ) {
+	    	thisPixel = (((workingRow*maximumColumns) + workingCol) * 4);
+	    	
+	    	whiteAlpha = whiteImageData.data[thisPixel + alpha];
+	    	blackAlpha = blackImageData.data[thisPixel + alpha];
+
+	    	if( (whiteAlpha == 254) && (blackAlpha == 254) ) {
+		    	coordsImageData.data[thisPixel + red] = 0;
+		    	coordsImageData.data[thisPixel + green] = 0;
+		    	coordsImageData.data[thisPixel + blue] = 0;
+	    	} else {
+		    	coordsImageData.data[thisPixel + red] = 255;
+		    	coordsImageData.data[thisPixel + green] = 255;
+		    	coordsImageData.data[thisPixel + blue] = 255;
+	    	}
+	    	coordsImageData.data[thisPixel + alpha] = 255;
+	    }
+    }
+
+    coordsContext.putImageData(coordsImageData, 0, 0);
+    
+	}
+  </script>
+</head>
+<body>
+	<canvas id="whiteCanvas" width="325" height="351"></canvas>
+	<canvas id="blackCanvas" width="325" height="351"></canvas>
+	<canvas id="coordsCanvas" width="325" height="351"></canvas><br>
+	
+	<a href="javascript: combineSpies();">Combine Spies</a>
+</body>
+</html>
+  
