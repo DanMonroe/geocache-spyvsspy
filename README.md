@@ -1,4 +1,7 @@
-geocache-geoquest
+geocache-spyvsspy
 =================
 
-Inform7 source code for GeoQuest. GeoQuest is a text based Geocaching.com puzzle at http://coord.info/GC1XBVY
+Source code for the Geocaching puzzle "Spy Vs Spy" at http://coord.info/GC2DZ36
+
+SPOILER:
+This repository also includes both a javascript based and java solution. 
